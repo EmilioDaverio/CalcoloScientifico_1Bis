@@ -21,12 +21,14 @@ class LinearSolversSparse:
             x_new = D_inv * (self.b - R.dot(self.x))
             if norm(self.A.dot(x_new) - self.b) / norm(self.b) < self.tol:
                 end_time = time.time()
-                print(f"Jacobi converged in {k+1} iterations and {end_time - start_time:.2f} seconds")
-                return x_new, k + 1
+                exec_time = end_time - start_time
+                print(f"Jacobi converged in {k+1} iterations and {exec_time:.2f} seconds")
+                return x_new, k + 1, exec_time
             self.x = x_new
         end_time = time.time()
-        print(f"Jacobi did not converge in {self.max_iter} iterations and {end_time - start_time:.2f} seconds")
-        return self.x, self.max_iter
+        exec_time = end_time - start_time
+        print(f"Jacobi did not converge in {self.max_iter} iterations and {exec_time:.2f} seconds")
+        return self.x, self.max_iter, exec_time
 
     def gauss_seidel(self):
         start_time = time.time()
@@ -41,12 +43,14 @@ class LinearSolversSparse:
                 x_new[i] = (self.b[i] - sum1 - sum2) / D[i]
             if norm(self.A.dot(x_new) - self.b) / norm(self.b) < self.tol:
                 end_time = time.time()
-                print(f"Gauss-Seidel converged in {k+1} iterations and {end_time - start_time:.2f} seconds")
-                return x_new, k + 1
+                exec_time = end_time - start_time
+                print(f"Gauss-Seidel converged in {k+1} iterations and {exec_time:.2f} seconds")
+                return x_new, k + 1, exec_time
             self.x = x_new
         end_time = time.time()
-        print(f"Gauss-Seidel did not converge in {self.max_iter} iterations and {end_time - start_time:.2f} seconds")
-        return self.x, self.max_iter
+        exec_time = end_time - start_time
+        print(f"Gauss-Seidel did not converge in {self.max_iter} iterations and {exec_time:.2f} seconds")
+        return self.x, self.max_iter, exec_time
 
     def gradient(self):
         start_time = time.time()
@@ -56,13 +60,15 @@ class LinearSolversSparse:
             x_new = self.x + alpha * r
             if norm(self.A.dot(x_new) - self.b) / norm(self.b) < self.tol:
                 end_time = time.time()
-                print(f"Gradient Descent converged in {k+1} iterations and {end_time - start_time:.2f} seconds")
-                return x_new, k + 1
+                exec_time = end_time - start_time
+                print(f"Gradient Descent converged in {k+1} iterations and {exec_time:.2f} seconds")
+                return x_new, k + 1, exec_time
             r = self.b - self.A.dot(x_new)
             self.x = x_new
         end_time = time.time()
-        print(f"Gradient Descent did not converge in {self.max_iter} iterations and {end_time - start_time:.2f} seconds")
-        return self.x, self.max_iter
+        exec_time = end_time - start_time
+        print(f"Gradient Descent did not converge in {self.max_iter} iterations and {exec_time:.2f} seconds")
+        return self.x, self.max_iter, exec_time
 
     def conjugate_gradient(self):
         start_time = time.time()
@@ -75,15 +81,17 @@ class LinearSolversSparse:
             r_new = r - alpha * self.A.dot(p)
             if norm(self.A.dot(x_new) - self.b) / norm(self.b) < self.tol:
                 end_time = time.time()
-                print(f"Conjugate Gradient converged in {k+1} iterations and {end_time - start_time:.2f} seconds")
-                return x_new, k + 1
+                exec_time = end_time - start_time
+                print(f"Conjugate Gradient converged in {k+1} iterations and {exec_time:.2f} seconds")
+                return x_new, k + 1, exec_time
             beta = (r_new @ r_new) / r_dot_r
             p = r_new + beta * p
             r = r_new
             self.x = x_new
         end_time = time.time()
-        print(f"Conjugate Gradient did not converge in {self.max_iter} iterations and {end_time - start_time:.2f} seconds")
-        return self.x, self.max_iter
+        exec_time = end_time - start_time
+        print(f"Conjugate Gradient did not converge in {self.max_iter} iterations and {exec_time:.2f} seconds")
+        return self.x, self.max_iter, exec_time
 
 def load_matrix(file_path):
     try:
